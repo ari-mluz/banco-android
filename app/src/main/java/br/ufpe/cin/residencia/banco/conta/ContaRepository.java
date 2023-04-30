@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-//Ver anotações TODO no código
 public class ContaRepository {
     private ContaDAO dao;
     private LiveData<List<Conta>> contas;
@@ -20,35 +19,39 @@ public class ContaRepository {
     }
 
     @WorkerThread
-    public void inserir(Conta c) {
-        dao.adicionar(c);
+    public void criarConta(Conta conta) {
+
+        dao.criarConta(conta);
+    }
+
+    // Implementação dos métodos atualizarConta e removerConta
+    @WorkerThread
+    public void atualizarConta(Conta conta) {
+        dao.atualizarConta(conta);
     }
 
     @WorkerThread
-    public void atualizar(Conta c) {
-        //TODO implementar atualizar
+    public void removerConta(Conta conta) {
+
+        dao.removerConta(conta);
+    }
+
+    // Implementação dos métodos de busca por número da conta, nome e CPF
+    @WorkerThread
+    public List<Conta> buscarNomeCliente(String nomeCliente) {
+        return dao.buscarNomeCliente(nomeCliente);
+
     }
 
     @WorkerThread
-    public void remover(Conta c) {
-        //TODO implementar remover
+    public List<Conta> buscarCpfCliente(String cpfCliente) {
+        return dao.buscarCpfCliente(cpfCliente);
+
     }
 
     @WorkerThread
-    public List<Conta> buscarPeloNome(String nomeCliente) {
-        //TODO implementar busca
-        return null;
-    }
+    public List<Conta> buscarNumeroConta(String numeroConta) {
+        return dao.buscarNumeroConta(numeroConta);
 
-    @WorkerThread
-    public List<Conta> buscarPeloCPF(String cpfCliente) {
-        //TODO implementar busca
-        return null;
-    }
-
-    @WorkerThread
-    public Conta buscarPeloNumero(String numeroConta) {
-        //TODO implementar busca
-        return null;
     }
 }

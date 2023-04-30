@@ -15,7 +15,6 @@ import java.text.NumberFormat;
 
 import br.ufpe.cin.residencia.banco.R;
 
-//Ver anotações TODO no código
 public class ContaViewHolder  extends RecyclerView.ViewHolder {
     TextView nomeCliente = null;
     TextView infoConta = null;
@@ -31,7 +30,15 @@ public class ContaViewHolder  extends RecyclerView.ViewHolder {
     void bindTo(Conta c) {
         this.nomeCliente.setText(c.nomeCliente);
         this.infoConta.setText(c.numero + " | " + "Saldo atual: R$" + NumberFormat.getCurrencyInstance().format(c.saldo));
-        //TODO Falta atualizar a imagem de acordo com o valor do saldo atual
+
+        //Atualiza as imagens condicionalmente de acordo com o saldo
+        if(c.saldo > 0) {
+            this.icone.setImageResource(R.drawable.ok);
+
+        } else {
+            this.icone.setImageResource(R.drawable.delete);
+        }
+
         this.addListener(c.numero);
     }
 
@@ -40,7 +47,9 @@ public class ContaViewHolder  extends RecyclerView.ViewHolder {
                 v -> {
                     Context c = this.itemView.getContext();
                     Intent i = new Intent(c, EditarContaActivity.class);
-                    //TODO Está especificando a Activity mas não está passando o número da conta pelo Intent
+
+                    //Passa o número da conta como dado adicional no intent antes de iniciar a atividade
+                    i.putExtra("numeroDaConta", numeroConta);
                     c.startActivity(i);
                 }
         );

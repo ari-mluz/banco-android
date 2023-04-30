@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import br.ufpe.cin.residencia.banco.R;
 
-//Ver anotações TODO no código
 public class AdicionarContaActivity extends AppCompatActivity {
 
     ContaViewModel viewModel;
@@ -37,9 +36,34 @@ public class AdicionarContaActivity extends AppCompatActivity {
                     String cpfCliente = campoCPF.getText().toString();
                     String numeroConta = campoNumero.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
-                    //TODO: Incluir validações aqui, antes de criar um objeto Conta (por exemplo, verificar que digitou um nome com pelo menos 5 caracteres, que o campo de saldo tem de fato um número, assim por diante). Se todas as validações passarem, aí sim cria a Conta conforme linha abaixo.
-                    Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
-                    //TODO: chamar o método que vai salvar a conta no Banco de Dados
+
+                    //Validações por campo antes da criação da conta
+                    // 1. Validação no número da conta
+                    if(numeroConta.length() != 5) {
+                        campoNumero.setError("O número da conta deve possuir 5 dígitos.");
+                        return;
+                    }
+                    // 2. Validação no saldo da conta
+                    if(saldoConta.isEmpty()) {
+                        campoSaldo.setError("Por favor, insira um valor.");
+                        return;
+                    }
+                    // 3. Validação no nome
+                    if(nomeCliente.isEmpty()) {
+                        campoNome.setError("O nome não pode estar em branco.");
+                        return;
+                    }
+                    //4. Validação no CPF
+                    if(cpfCliente.length() != 11) {
+                        campoCPF.setError("O campo CPF deve conter 11 dígitos.");
+                        return;
+                    }
+
+                    Conta conta = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
+
+                    //Chama o método criarConta
+                    viewModel.criarConta(conta);
+                    finish();
                 }
         );
 

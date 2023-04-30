@@ -11,7 +11,6 @@ import android.widget.EditText;
 
 import br.ufpe.cin.residencia.banco.R;
 
-//Ver anotações TODO no código
 public class EditarContaActivity extends AppCompatActivity {
 
     public static final String KEY_NUMERO_CONTA = "numeroDaConta";
@@ -33,7 +32,15 @@ public class EditarContaActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String numeroConta = i.getStringExtra(KEY_NUMERO_CONTA);
-        //TODO usar o número da conta passado via Intent para recuperar informações da conta
+
+        //Preenche os campos com as informações da conta obtidas através do número da conta via Intent
+        viewModel.buscarNumeroConta(numeroConta);
+        viewModel.contaAtual.observe(this, conta -> {
+            campoNumero.setText(conta.numero);
+            campoSaldo.setText(String.valueOf(conta.saldo));
+            campoCPF.setText(conta.cpfCliente);
+            campoNome.setText(conta.nomeCliente);
+        });
 
         btnAtualizar.setText("Editar");
         btnAtualizar.setOnClickListener(
@@ -41,13 +48,36 @@ public class EditarContaActivity extends AppCompatActivity {
                     String nomeCliente = campoNome.getText().toString();
                     String cpfCliente = campoCPF.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
-                    //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
-                    //TODO: chamar o método que vai atualizar a conta no Banco de Dados
+
+                    //Validações da edição
+                    if(nomeCliente.isEmpty()) {
+                        campoNome.setError("Este campo é obrigatório.");
+                        campoNome.requestFocus();
+                        return;
+                    }
+                    if(cpfCliente.isEmpty()) {
+                        campoCPF.setError("Este campo é obrigatório.");
+                        campoCPF.requestFocus();
+                        return;
+                    }
+                    if(saldoConta.isEmpty()) {
+                        campoSaldo.setError("Este campo é obrigatório.");
+                        campoSaldo.requestFocus();
+                        return;
+                    }
+
+                    //Chamada do método de atualização de conta
+                    Conta dadosAtualizados = new Conta(numeroConta, Double.parseDouble(saldoConta), nomeCliente, cpfCliente);
+                    viewModel.atualizarConta(dadosAtualizados);
+                    finish();
                 }
         );
 
         btnRemover.setOnClickListener(v -> {
-            //TODO implementar remoção da conta
+            //Remoção de conta
+            Conta conta = viewModel.contaAtual.getValue();
+            viewModel.removerConta(conta);
+            finish();
         });
     }
 }

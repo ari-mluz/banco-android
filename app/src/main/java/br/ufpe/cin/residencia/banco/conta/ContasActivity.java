@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 
 import br.ufpe.cin.residencia.banco.R;
 
-//Ver anotações TODO no código
 public class ContasActivity extends AppCompatActivity {
     ContaAdapter adapter;
     ContaViewModel viewModel;
@@ -32,6 +32,19 @@ public class ContasActivity extends AppCompatActivity {
         adicionarConta.setOnClickListener(
                 v -> startActivity(new Intent(this, AdicionarContaActivity.class))
         );
+
+        // Observa a lista de contas e atualiza o adapter com a nova lista.
+        viewModel.contas.observe(this, contas-> {
+            adapter.submitList(contas);
+        });
     }
-    //TODO Neste arquivo ainda falta implementar o código que atualiza a lista de contas automaticamente na tela
+
+    // Atualiza a exibição da lista sempre que a activity inicializar.
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onStart(){
+        super.onStart();
+        adapter.notifyDataSetChanged();
+    }
+
 }

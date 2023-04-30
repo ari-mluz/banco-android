@@ -3,16 +3,15 @@ package br.ufpe.cin.residencia.banco.conta;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.WorkerThread;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Query;
 
 import java.util.List;
 
 import br.ufpe.cin.residencia.banco.BancoDB;
 
-//Ver métodos anotados com TODO
 public class ContaViewModel extends AndroidViewModel {
 
     private ContaRepository repository;
@@ -26,19 +25,26 @@ public class ContaViewModel extends AndroidViewModel {
         this.contas = repository.getContas();
     }
 
-    void inserir(Conta c) {
-        new Thread(() -> repository.inserir(c)).start();
+    void criarConta(Conta conta) {
+
+        new Thread( () -> repository.criarConta(conta)).start();
     }
 
-    void atualizar(Conta c) {
-        //TODO implementar
+    //Métodos de atualização e remoção de contas
+    void atualizarConta(Conta conta) {
+        new Thread( () -> repository.atualizarConta(conta)).start();
     }
 
-    void remover(Conta c) {
-        //TODO implementar
+    void removerConta(Conta conta) {
+        new Thread( () -> repository.removerConta(conta)).start();
     }
 
-    void buscarPeloNumero(String numeroConta) {
-        //TODO implementar
+    //Método de busca por número da conta
+    void buscarNumeroConta(String numeroConta) {
+        new Thread( () -> {
+            List<Conta> contas = this.repository.buscarNumeroConta(numeroConta);
+            _contaAtual.postValue(contas.get(0));
+        }).start();
     }
+
 }

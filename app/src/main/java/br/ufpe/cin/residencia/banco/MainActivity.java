@@ -13,7 +13,6 @@ import java.text.NumberFormat;
 import br.ufpe.cin.residencia.banco.cliente.ClientesActivity;
 import br.ufpe.cin.residencia.banco.conta.ContasActivity;
 
-//Ver anotações TODO no código
 public class MainActivity extends AppCompatActivity {
     BancoViewModel viewModel;
 
@@ -52,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         pesquisar.setOnClickListener(
                 v -> startActivity(new Intent(this, PesquisarActivity.class))
         );
+
+        viewModel.contas.observe(this, contas2 -> {
+            double saldoTotal = viewModel.calcularSubtotalBanco();
+            totalBanco.setText("R$ " + saldoTotal);
+        });
     }
-    //TODO Neste arquivo ainda falta a atualização automática do valor total de dinheiro armazenado no banco
+
 }

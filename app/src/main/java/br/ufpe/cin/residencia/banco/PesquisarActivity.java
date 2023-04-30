@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 
 import br.ufpe.cin.residencia.banco.conta.ContaAdapter;
 
-//Ver anotações TODO no código
 public class PesquisarActivity extends AppCompatActivity {
     BancoViewModel viewModel;
     ContaAdapter adapter;
@@ -36,11 +36,27 @@ public class PesquisarActivity extends AppCompatActivity {
         btnPesquisar.setOnClickListener(
                 v -> {
                     String oQueFoiDigitado = aPesquisar.getText().toString();
-                    //TODO implementar a busca de acordo com o tipo de busca escolhido pelo usuário
+
+                    //Armazena e processa de acordo com o tipo de busca selecionado
+                    int botaoSelecionado = tipoPesquisa.getCheckedRadioButtonId();
+
+                    RadioButton radioButton = findViewById(botaoSelecionado);
+
+                    String tipoBusca = radioButton.getText().toString();
+
+                    if(tipoBusca.equals("CPF")) {
+                        viewModel.buscarPeloCPF(oQueFoiDigitado);
+                    } else if(tipoBusca.equals("Nome") && !(oQueFoiDigitado.isEmpty())) {
+                        viewModel.buscarPeloNome(oQueFoiDigitado);
+                    } else if(!oQueFoiDigitado.isEmpty()){
+                        viewModel.buscarNumeroConta(oQueFoiDigitado);
+                    }
+
                 }
         );
 
-        //TODO atualizar o RecyclerView com resultados da busca na medida que encontrar
+        //Observa os resultados e atualiza de acordo
+        viewModel.contasDadosAtualizados.observe(this, contas -> {adapter.submitList(contas);});
 
 
     }

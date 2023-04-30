@@ -10,18 +10,34 @@ import androidx.room.Update;
 
 import java.util.List;
 
-//Ver anotações TODO no código
 @Dao
 public interface ContaDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void adicionar(Conta c);
+    void criarConta(Conta conta);
 
-    //TODO incluir métodos para atualizar conta e remover conta
+    //Criação dos métodos atualizarConta e removerConta
+    @Update
+    void atualizarConta(Conta conta);
+
+    @Delete
+    void removerConta(Conta conta);
 
     @Query("SELECT * FROM contas ORDER BY numero ASC")
     LiveData<List<Conta>> contas();
 
-    //TODO incluir métodos para buscar pelo (1) número da conta, (2) pelo nome e (3) pelo CPF do Cliente
+    //Métodos de busca
+
+    //1. Busca pelo número da conta
+    @Query("SELECT * FROM contas WHERE numero = :numeroConta LIMIT 1")
+    List<Conta>buscarNumeroConta(String numeroConta);
+
+    //2. Busca pelo CPF
+    @Query("SELECT * FROM contas WHERE cpfCliente = :cpfCliente")
+    List<Conta>buscarCpfCliente(String cpfCliente);
+
+    //3. Busca pelo nome
+    @Query("SELECT * FROM contas WHERE nomeCliente LIKE :nomeCliente")
+    List<Conta>buscarNomeCliente(String nomeCliente);
 
 }

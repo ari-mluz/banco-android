@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-//Ver anotações TODO no código
 public class TransferirActivity extends AppCompatActivity {
 
     BancoViewModel viewModel;
@@ -34,9 +34,21 @@ public class TransferirActivity extends AppCompatActivity {
                 v -> {
                     String numOrigem = numeroContaOrigem.getText().toString();
                     String numDestino = numeroContaDestino.getText().toString();
-                    //TODO lembrar de implementar validação dos números das contas e do valor da operação, antes de efetuar a operação de transferência.
-                    // O método abaixo está sendo chamado, mas precisa ser implementado na classe BancoViewModel para funcionar.
+
                     double valor = Double.valueOf(valorOperacao.getText().toString());
+
+                    //Validações de número da conta e valor
+                    if (numOrigem.isEmpty()) {
+                        Toast.makeText(this, "Insira o número da conta.", Toast.LENGTH_SHORT).show();
+                    } else if (numDestino.isEmpty()) {
+                        Toast.makeText(this, "Insira o número da conta.", Toast.LENGTH_SHORT).show();
+                    } else if (numOrigem.equals(numDestino)){
+                        Toast.makeText(this, "Insira um número de origem/destino diferente", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (valor <= 0) {
+                        Toast.makeText(this, "Valor mínimo da operação é de R$1,00.", Toast.LENGTH_SHORT).show();
+                    }
+
                     viewModel.transferir(numOrigem, numDestino, valor);
                     finish();
                 }
