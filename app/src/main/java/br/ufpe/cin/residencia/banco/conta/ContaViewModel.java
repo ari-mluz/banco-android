@@ -25,6 +25,7 @@ public class ContaViewModel extends AndroidViewModel {
         this.contas = repository.getContas();
     }
 
+    //Implementação do método
     void criarConta(Conta conta) {
 
         new Thread( () -> repository.criarConta(conta)).start();

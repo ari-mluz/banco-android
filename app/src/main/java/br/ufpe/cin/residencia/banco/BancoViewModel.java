@@ -31,7 +31,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void transferir(String numeroContaOrigem, String numeroContaDestino, double valor) {
-        //Chama as operações de debitar e creditar
+        //Inicia uma nova thread e chama as operações de debitar e creditar
         new Thread( () -> {
 
             debitar(numeroContaOrigem, valor);
@@ -43,7 +43,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void creditar(String numeroConta, double valor) {
-
+        //Inicia uma thread, busca a conta pelo número, aplica o método creditar de Conta.java e atualiza o valor para aplicar o crédito
         new Thread(()->{
             List<Conta> contas = this.repository.buscarNumeroConta(numeroConta);
             Conta conta = contas.get(0);
@@ -53,7 +53,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void debitar(String numeroConta, double valor) {
-
+        //Inicia uma thread, busca a conta pelo número, aplica o método debitar de Conta.java e atualiza o valor para aplicar o débito
         new Thread(()->{
             List<Conta> contas = this.repository.buscarNumeroConta(numeroConta);
             Conta conta = contas.get(0);
@@ -64,7 +64,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void buscarPeloNome(String nomeCliente) {
-
+        //Inicia uma thread e atualiza a lista de contas com os dados atualizados
         new Thread( () -> {
             List<Conta> listaContas = this.repository.buscarNomeCliente(nomeCliente);
             _contasDadosAtualizados.postValue(listaContas);
@@ -72,7 +72,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void buscarPeloCPF(String cpfCliente) {
-
+        //Inicia uma thread e atualiza a lista de contas com os dados atualizados
         new Thread(() -> {
             List<Conta> listaContas = this.repository.buscarCpfCliente(cpfCliente);
             _contasDadosAtualizados.postValue(listaContas);
@@ -80,7 +80,7 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void buscarNumeroConta(String numeroConta) {
-
+        //Inicia uma thread e atualiza a lista de contas com os dados atualizados
         new Thread(() -> {
             List<Conta> listaContas = this.repository.buscarNumeroConta(numeroConta);
             _contasDadosAtualizados.postValue(listaContas);

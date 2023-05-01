@@ -37,7 +37,7 @@ public class TransferirActivity extends AppCompatActivity {
 
                     double valor = Double.valueOf(valorOperacao.getText().toString());
 
-                    //Validações de número da conta e valor
+                    //Validações de número da conta e valor, exibindo um aviso ao usuário
                     if (numOrigem.isEmpty()) {
                         Toast.makeText(this, "Insira o número da conta.", Toast.LENGTH_SHORT).show();
                     } else if (numDestino.isEmpty()) {

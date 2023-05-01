@@ -24,9 +24,10 @@ public class ContaRepository {
         dao.criarConta(conta);
     }
 
-    // Implementação dos métodos atualizarConta e removerConta
+    // Implementação dos métodos DAO atualizarConta e removerConta
     @WorkerThread
     public void atualizarConta(Conta conta) {
+
         dao.atualizarConta(conta);
     }
 
@@ -36,7 +37,7 @@ public class ContaRepository {
         dao.removerConta(conta);
     }
 
-    // Implementação dos métodos de busca por número da conta, nome e CPF
+    // Implementação dos métodos DAO de busca por número da conta, nome e CPF
     @WorkerThread
     public List<Conta> buscarNomeCliente(String nomeCliente) {
         return dao.buscarNomeCliente(nomeCliente);
